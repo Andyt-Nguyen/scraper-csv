@@ -1,8 +1,13 @@
 from bs4 import BeautifulSoup
 import requests
+import csv
 
 source = requests.get('http://coreyms.com').text
 soup = BeautifulSoup(source, 'lxml')
+csv_file = open('csv_scrape.csv', 'w')
+
+csv_writer = csv.writer(csv_file)
+csv_writer.writerow(['headline','summary','video_link'])
 
 all_articles = soup.find_all('article')
 for article in all_articles:
@@ -17,6 +22,10 @@ for article in all_articles:
 
 	except Exception as e:
 		yt_link = None
+
+	csv_writer.writerow([head_line,summary,yt_link])
+
+csv_file.close()
 
 
 
